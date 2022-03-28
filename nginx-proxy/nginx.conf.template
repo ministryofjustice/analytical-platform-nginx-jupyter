@@ -60,7 +60,7 @@ http {
 
       access_by_lua '
           local opts = {
-            #redirect_uri = "https://${USERNAME}-jupyter-lab.${REDIRECT_DOMAIN}/callback",
+            -- redirect_uri = "https://${USERNAME}-jupyter-lab.${REDIRECT_DOMAIN}/callback",
             redirect_uri = "http://localhost/callback",
             discovery = "https://${AUTH0_TENANT_DOMAIN}/.well-known/openid-configuration",
             token_signing_alg_values_expected = "HS256",
@@ -105,7 +105,7 @@ http {
         proxy_pass            http://${APP_HOST}:${APP_PORT};
         proxy_set_header      Host $host;
         # most recent trusted IP
-        proxy_set_header      X-Real-Ip $remote_addr;  
+        proxy_set_header      X-Real-Ip $remote_addr;
         # prevents proxy from anonymyzing user
         proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
       }
@@ -118,7 +118,7 @@ http {
         # upgrade a HTTP connection for web sockets
         proxy_set_header      Upgrade "websocket";
         # "Upgrade" must be listed here since it is a hop-by-hop header
-        proxy_set_header      Connection "Upgrade";  
+        proxy_set_header      Connection "Upgrade";
         proxy_read_timeout    86400;
       }
       # Terminal connections.
@@ -129,6 +129,15 @@ http {
         proxy_set_header      Upgrade "websocket";
         proxy_set_header      Connection "Upgrade";
         proxy_read_timeout    86400;
+      }
+      # Tunnel
+      location ~ /_tunnel_/8050/ {
+        proxy_pass            http://${APP_HOST}:8050;
+        proxy_set_header      Host $host;
+        proxy_http_version    1.1;
+        proxy_read_timeout    86400;
+        proxy_set_header      X-Real-Ip $remote_addr;
+        proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
       }
     }
   }
