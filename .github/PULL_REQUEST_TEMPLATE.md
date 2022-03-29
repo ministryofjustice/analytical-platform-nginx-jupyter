@@ -12,6 +12,3 @@ Describe what you have changed and *why*
 
 Provide [http://example.com](links) to relevant tickets, articles or other
 resources.
-
-Note the Trello Github integration links tickets to PRs/branches/commits (in
-both directions).
