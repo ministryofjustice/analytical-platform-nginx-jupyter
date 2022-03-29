@@ -79,6 +79,7 @@ jobs:
           ./tests/check_is_redirecting.sh
 
       - name: Clean up (docker-compose)
+        if: always()
         run: make clean
 
       # - name: Push image
