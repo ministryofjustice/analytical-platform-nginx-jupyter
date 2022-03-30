@@ -9,7 +9,7 @@ services:
     volumes: [./home:/home/test_user]
 
   nginx-proxy:
-    image: ${REGISTRY}/${REPOSITORY}:${VERSION}
+    image: ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
     ports: [80:3000]
     build:
       network: ${NETWORK:-default}
