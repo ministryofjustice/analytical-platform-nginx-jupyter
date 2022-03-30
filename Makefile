@@ -3,7 +3,7 @@ export NETWORK ?= default
 export CHEF_LICENSE := accept-no-persist
 export REPOSITORY := nginx-jupyter
 export VERSION ?= 0.0.1
-
+export IMAGE_TAG ?= UNSET
 
 export DOCKER_BUILDKIT=1
 
@@ -37,7 +37,6 @@ enter:
 	docker-compose run --entrypoint sh ${REPOSITORY}
 
 integration:
-	docker-compose run --rm inspec check tests
-	docker-compose run --rm inspec exec tests
+	$(shell ./tests/check_is_redirecting.sh)
 
-test: up integration clean
+test: build up integration clean
