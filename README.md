@@ -17,7 +17,7 @@ find it at [http://localhost/](http://localhost/).
 
 To view logs, `make logs`, to attach to the proxy's shell, `make enter`.
 
-To stop the proxy, `make down`.
+To stop the proxy, `make clean`.
 
 ## Environment Variables
 
@@ -30,7 +30,7 @@ To stop the proxy, `make down`.
 | AUTH0_TENANT_DOMAIN  | From Auth0, the context in which users authenticate  |
 | AUTH0_CLIENT_ID      | From Auth0, identifies the app in the tenant         |
 | AUTH0_CLIENT_SECRET  | From Auth0, for the referenced app in the tenant     |
-| REDIRECT_DOMAIN      | The domain name that AP is running on                |
+| REDIRECT_DOMAIN      | The root domain name that AP tools are running on    |
 
 ## Releasing
 

@@ -9,10 +9,8 @@ export USERNAME ?= test-user
 export REDIRECT_DOMAIN ?= dev-127.0.0.1.nip.io
 export DOCKER_BUILDKIT=1
 
-clean: down
-
-jupyter-lab:
-	docker-compose up jupyter-lab
+clean: 
+	docker-compose down --volumes --remove-orphans
 
 pull:
 	docker-compose pull
@@ -28,12 +26,6 @@ up:
 
 logs:
 	docker-compose logs -f nginx-proxy
-
-down:
-	docker-compose down --volumes --remove-orphans
-
-enter:
-	docker-compose run --entrypoint sh ${REPOSITORY}
 
 integration:
 	./tests/check_is_redirecting.sh
