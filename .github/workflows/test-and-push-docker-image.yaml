@@ -74,6 +74,11 @@ jobs:
       - name: Spin up (docker-compose)
         run: make clean up
 
+      - name: Sleep for 10 seconds
+        uses: whatnick/wait-action@master
+        with:
+          time: '10s'
+
       - name: Test (docker-compose)
         run: make integration
 
