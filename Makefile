@@ -10,9 +10,6 @@ export DOCKER_BUILDKIT=1
 
 clean: down
 
-rstudio:
-	docker-compose up rstudio
-
 jupyter-lab:
 	docker-compose up jupyter-lab
 
