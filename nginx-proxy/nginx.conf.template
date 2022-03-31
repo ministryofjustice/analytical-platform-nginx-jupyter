@@ -60,8 +60,7 @@ http {
 
       access_by_lua '
           local opts = {
-            -- redirect_uri = "https://${USERNAME}-jupyter-lab.${REDIRECT_DOMAIN}/callback",
-            redirect_uri = "http://localhost/callback",
+            redirect_uri = "https://${USERNAME}-jupyter-lab.${REDIRECT_DOMAIN}/callback",
             discovery = "https://${AUTH0_TENANT_DOMAIN}/.well-known/openid-configuration",
             token_signing_alg_values_expected = "HS256",
             client_id = "${AUTH0_CLIENT_ID}",

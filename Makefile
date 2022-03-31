@@ -5,7 +5,8 @@ export REPOSITORY := nginx-jupyter
 export VERSION ?= 0.0.1
 export IMAGE_TAG ?= UNSET
 export PROXY_PORT ?= 8001
-export REDIRECT_URL ?= "http://localhost:{PROXY_PORT}/callback"
+export USERNAME ?= test-user
+export REDIRECT_DOMAIN ?= dev-127.0.0.1.nip.io
 export DOCKER_BUILDKIT=1
 
 clean: down
