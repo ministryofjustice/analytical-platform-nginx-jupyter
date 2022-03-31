@@ -75,8 +75,7 @@ jobs:
         run: make clean up
 
       - name: Test (docker-compose)
-        run: |
-          ./tests/check_is_redirecting.sh
+        run: make integration
 
       - name: Clean up (docker-compose)
         if: always()

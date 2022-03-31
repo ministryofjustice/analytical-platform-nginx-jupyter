@@ -4,7 +4,8 @@ export CHEF_LICENSE := accept-no-persist
 export REPOSITORY := nginx-jupyter
 export VERSION ?= 0.0.1
 export IMAGE_TAG ?= UNSET
-
+export PROXY_PORT ?= 8001
+export REDIRECT_URL ?= "http://localhost:{PROXY_PORT}/callback"
 export DOCKER_BUILDKIT=1
 
 clean: down
@@ -37,6 +38,6 @@ enter:
 	docker-compose run --entrypoint sh ${REPOSITORY}
 
 integration:
-	$(shell ./tests/check_is_redirecting.sh)
+	./tests/check_is_redirecting.sh
 
 test: build up integration clean
