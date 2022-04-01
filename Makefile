@@ -1,6 +1,5 @@
 export REGISTRY:=593291632749.dkr.ecr.eu-west-1.amazonaws.com
 export NETWORK?=default
-export CHEF_LICENSE:=accept-no-persist
 export REPOSITORY:=nginx-proxy-jupyter
 export VERSION?=0.0.1
 export IMAGE_TAG?=UNSET
