@@ -1,12 +1,12 @@
-export REGISTRY := 593291632749.dkr.ecr.eu-west-1.amazonaws.com
-export NETWORK ?= default
-export CHEF_LICENSE := accept-no-persist
-export REPOSITORY := nginx-jupyter
-export VERSION ?= 0.0.1
-export IMAGE_TAG ?= UNSET
-export PROXY_PORT ?= 8001
-export USERNAME ?= test-user
-export REDIRECT_DOMAIN ?= dev-127.0.0.1.nip.io
+export REGISTRY:=593291632749.dkr.ecr.eu-west-1.amazonaws.com
+export NETWORK?=default
+export CHEF_LICENSE:=accept-no-persist
+export REPOSITORY:=nginx-proxy-jupyter
+export VERSION?=0.0.1
+export IMAGE_TAG?=UNSET
+export PROXY_PORT?=8001
+export USERNAME?=test-user
+export REDIRECT_DOMAIN?=dev-127.0.0.1.nip.io
 export DOCKER_BUILDKIT=1
 
 clean: 
