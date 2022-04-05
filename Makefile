@@ -5,7 +5,7 @@ export VERSION?=0.0.1
 export IMAGE_TAG?=UNSET
 export PROXY_PORT?=8001
 export USERNAME?=test-user
-export REDIRECT_DOMAIN?=dev-127.0.0.1.nip.io
+export REDIRECT_DOMAIN?=127-0-0-1.nip.io:8001
 export DOCKER_BUILDKIT=1
 
 clean: 
