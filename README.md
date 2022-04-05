@@ -9,7 +9,7 @@ Jupyterlab is deployed by the Control Panel. When deployed the pod looks like th
 The authentication is done using an OIDC call to Auth0, the call is written in lua.
 
 N.B. There may in future be a better solution, however at time of implementation, lua was the nginx community recommended solution for this authentication flow.
-## Usage
+## Usage locally
 
 All interactions are performed via the `Makefile`.
 
@@ -58,3 +58,18 @@ GitHub trigger.
 - If the default branch is pushed to, tag the image as edge
 - If a PR is pushed, tag as per the PR number
 - Anything other than the above scenarios: use the Git SHA
+
+## In production usage
+
+The nginx-proxy-jupyter container is deployed via helm chart without using the Makefile or docker-compose.
+
+It will need the above environment variables to be set; the startup script will complain if they are not.
+
+Currently it's used in the following charts
+- jupyter-lab
+- jupyter-lab-all-spark
+- jupyter-lab-datascience-notebook
+
+## For future developers reference
+
+This is the current nginx proxy for Jupyter lab as of 5th April 2022.
