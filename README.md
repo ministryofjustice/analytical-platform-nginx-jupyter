@@ -53,7 +53,7 @@ To restart and rebuild, `make clean build up`.
 
 ## Releasing
 
-The `Prep Tags` step in the GitHub worklfow changes the pushed tag based on the
+The `Prep Tags` step in the GitHub workflow changes the pushed tag based on the
 GitHub trigger.
 
 - If tags have been pushed, use that tag as the version
