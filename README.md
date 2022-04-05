@@ -32,9 +32,11 @@ directory.
 Run `make build` then `make up` to start the proxy and Jupyter. Once up, you'll
 find it at [http://localhost/](http://localhost/).
 
-To view logs, `make logs`, to attach to the proxy's shell, `make enter`.
+To view logs, `make logs`.
 
 To stop the proxy, `make clean`.
+
+To restart and rebuild, `make clean build up`.
 
 ## Environment Variables
 
