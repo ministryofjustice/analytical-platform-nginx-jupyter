@@ -23,6 +23,7 @@ All interactions are performed via the `Makefile`.
 | logs | see the logs |
 | integration | just run the tests (for gha) |
 | test | run the test process inc. start and cleanup |
+
 ### Running the Application Locally
 
 Ensure you have the expected environment variables (see below) in a `.envrc`
@@ -30,7 +31,11 @@ file. Then run `direnv allow` to set these for work done in the project's home
 directory.
 
 Run `make build` then `make up` to start the proxy and Jupyter. Once up, you'll
-find it at [http://localhost/](http://localhost/).
+find it at http://_<your_github_username>_-jupyter-lab.127-0-0-1.nip.io:8001/.
+
+On the callback from Auth0, you'll need to remove the s from the https in the callback url, 
+because this doesn't have http support.
+(https is handled by kubernetes ingress in production.)
 
 To view logs, `make logs`.
 
