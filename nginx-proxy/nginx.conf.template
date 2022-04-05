@@ -9,7 +9,7 @@
 # APP_PORT -  The port on which the proxied app is listening (e.g. 8787)
 # REDIRECT_DOMAIN - The domain of the analytical platform
 #
-# These are replaced via the envsubst command. See the Docker file for details.
+# These are replaced via the envsubst command. See the `start_proxy.sh` script for details.
 
 events {
   worker_connections 128;
@@ -51,14 +51,16 @@ http {
 
     error_log /var/log/nginx/error.log info;
 
+    # This is for kubernetes to check the container is functional
     location /nginx-health {
         return 200 'OK';
         add_header Content-Type text/plain;
     }
 
     location / {
-
+      # This logic calls out to AUTH0 for OIDC authentication
       access_by_lua '
+          -- Configuration for the OIDC call
           local opts = {
             redirect_uri = "https://${USERNAME}-jupyter-lab.${REDIRECT_DOMAIN}/callback",
             discovery = "https://${AUTH0_TENANT_DOMAIN}/.well-known/openid-configuration",
@@ -79,7 +81,7 @@ http {
             ngx.exit(ngx.HTTP_FORBIDDEN)
           end
 
-          -- use the expected sole user of the upstream service.
+          -- use the expected github user of the upstream service.
           local username = "${USERNAME}";
 
           if res and username then
@@ -98,7 +100,7 @@ http {
           end
       ';
 
-      # JupyterLab proxy settings.
+      # JupyterLab specific proxy settings.
       location / {
         proxy_read_timeout    300s;
         proxy_pass            http://${APP_HOST}:${APP_PORT};
