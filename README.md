@@ -1,11 +1,28 @@
 # Nginx/Auth0 Proxy
 
-A simple Dockerized authentication proxy for web applications.
+A simple Dockerized authentication proxy for Jupyterlab.
 
+Jupyterlab is deployed by the Control Panel. When deployed the pod looks like the image below, with Jupyterlab protected from the internet by this proxy.
+
+![Diagram explaining the structure where the proxy authenticates against Auth0, and then allows authenticated access to the jupyterhub image](docs/images/jupyterlab-pod.drawio-s.png "How the proxy is used")
+
+The authentication is done using an OIDC call to Auth0, the call is written in lua.
+
+N.B. There may in future be a better solution, however at time of implementation, lua was the nginx community recommended solution for this authentication flow.
 ## Usage
 
 All interactions are performed via the `Makefile`.
 
+| Makefile command | Description |
+| ---------------- | ----------- |
+| clean | stop & destroy cont. |
+| pull | pull the latest img (unused) |
+| push | push the image to repo (gha-only) |
+| build | build the proxy image |
+| up | start the proxy and jupyter in daemon mode |
+| logs | see the logs |
+| integration | just run the tests (for gha) |
+| test | run the test process inc. start and cleanup |
 ### Running the Application Locally
 
 Ensure you have the expected environment variables (see below) in a `.envrc`

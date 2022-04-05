@@ -10,7 +10,7 @@ check_vars()
     return 0
 }
 
-# set -u checks if the values are set, but docker-compose is setting the variables to be blank strings if not set, 
+# set -u checks if the values are set, but docker-compose is setting the variables to be blank strings if never set, 
 # so this checks if they are blank OR unset.
 check_vars REDIRECT_DOMAIN AUTH0_TENANT_DOMAIN AUTH0_CLIENT_ID AUTH0_CLIENT_SECRET LOGOUT_URL APP_HOST APP_PORT USERNAME
 
