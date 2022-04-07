@@ -16,7 +16,7 @@ All interactions are performed via the `Makefile`.
 | Makefile command | Description |
 | ---------------- | ----------- |
 | clean | stop & destroy containers |
-| pull | pull the latest img (unused) |
+| pull | pull the latest image (unused) |
 | push | push the image to repo (gha-only) |
 | build | build the proxy image |
 | up | start the proxy and jupyter in daemon mode |
