@@ -15,7 +15,7 @@ All interactions are performed via the `Makefile`.
 
 | Makefile command | Description |
 | ---------------- | ----------- |
-| clean | stop & destroy cont. |
+| clean | stop & destroy containers |
 | pull | pull the latest img (unused) |
 | push | push the image to repo (gha-only) |
 | build | build the proxy image |
