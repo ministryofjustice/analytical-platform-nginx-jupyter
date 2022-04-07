@@ -1,19 +1,15 @@
-export REGISTRY := 593291632749.dkr.ecr.eu-west-1.amazonaws.com
-export NETWORK ?= default
-export CHEF_LICENSE := accept-no-persist
-export REPOSITORY := nginx-jupyter
-export VERSION ?= 0.0.1
-export IMAGE_TAG ?= UNSET
-
+export REGISTRY:=593291632749.dkr.ecr.eu-west-1.amazonaws.com
+export NETWORK?=default
+export REPOSITORY:=nginx-proxy-jupyter
+export VERSION?=0.0.1
+export IMAGE_TAG?=UNSET
+export PROXY_PORT?=8001
+export USERNAME?=test-user
+export REDIRECT_DOMAIN?=127-0-0-1.nip.io:8001
 export DOCKER_BUILDKIT=1
 
-clean: down
-
-rstudio:
-	docker-compose up rstudio
-
-jupyter-lab:
-	docker-compose up jupyter-lab
+clean: 
+	docker-compose down --volumes --remove-orphans
 
 pull:
 	docker-compose pull
@@ -30,13 +26,7 @@ up:
 logs:
 	docker-compose logs -f nginx-proxy
 
-down:
-	docker-compose down --volumes --remove-orphans
-
-enter:
-	docker-compose run --entrypoint sh ${REPOSITORY}
-
 integration:
-	$(shell ./tests/check_is_redirecting.sh)
+	./tests/check_is_redirecting.sh
 
 test: build up integration clean

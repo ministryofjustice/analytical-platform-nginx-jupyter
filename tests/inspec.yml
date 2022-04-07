@@ -1,9 +1,0 @@
----
-name: Nginx Proxy
-title: Nginx Proxy
-maintainer: Analytical Platform
-copyright: Copyright (c) 2021 Crown Copyright (Ministry of Justice)
-copyright_email: "analytics-platform-tech@digital.justice.gov.uk"
-license: MIT
-summary: An InSpec Compliance Profile for Analytical Platform Auth0 Nginx Proxy
-version: 0.1.0
