@@ -22,7 +22,7 @@ All interactions are performed via the `Makefile`.
 | up | start the proxy and jupyter in daemon mode |
 | logs | see the logs |
 | integration | just run the tests (for gha) |
-| test | run the test process inc. start and cleanup |
+| test | run the test process including start and cleanup |
 
 ### Running the Application Locally
 
