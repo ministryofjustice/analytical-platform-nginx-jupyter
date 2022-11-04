@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "testing redirect on $PROXY_PORT"
+
 cmd=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:$PROXY_PORT/)
 if [[ $cmd -ne 302 ]]; then
   echo "Test failed because curl responded with a $cmd"
