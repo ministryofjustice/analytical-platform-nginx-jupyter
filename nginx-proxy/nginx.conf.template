@@ -31,7 +31,7 @@ http {
   lua_shared_dict jwks 1m;
 
   # cache for activity data for pod idler
-  lua_shared_dict activity 72h;
+  lua_shared_dict activity 256k;
 
   map $http_upgrade $connection_upgrade {
     default upgrade;
@@ -63,6 +63,9 @@ http {
     location / {
       # This logic calls out to AUTH0 for OIDC authentication
       access_by_lua '
+          -- access activity shared memory
+          local activity = ngx.shared.activity
+
           -- Configuration for the OIDC call
           local opts = {
             redirect_uri = "https://${USERNAME}-jupyter-lab.${REDIRECT_DOMAIN}/callback",
@@ -73,13 +76,6 @@ http {
             redirect_after_logout_uri = "https://${AUTH0_TENANT_DOMAIN}/v2/logout?client_id=${AUTH0_CLIENT_ID}&redirectTo=${LOGOUT_URL}",
             redirect_after_logout_with_id_token_hint = false
           }
-
-          # access activity shared memory
-          local activity = ngx.shared.activity
-
-          # current unix time
-          local timestamp = os.time(os.date("!*t"))
-          activity:set("last_seen",timestamp)
 
           -- call bearer_jwt_verify for OAuth 2.0 JWT validation.
           local res, err = require("resty.openidc").authenticate(opts)
@@ -107,17 +103,12 @@ http {
               ngx.exit(ngx.HTTP_FORBIDDEN)
             end
 
+            -- record the access time so we can decide when to idle
+            local timestamp = os.time(os.date("!*t"))
+            activity:set("last_seen",timestamp)
+
           end
       ';
-
-      location /last-seen {
-        content_by_lua_block {
-          local activity = ngx.shared.activity
-          local last_seen, flags = activity:get("last_seen")
-          nginx.print(last_seen)
-          ngx.exit(ngx.HTTP_OK)
-        }
-      }
 
       # JupyterLab specific proxy settings.
       location / {
@@ -128,6 +119,15 @@ http {
         proxy_set_header      X-Real-Ip $remote_addr;
         # prevents proxy from anonymyzing user
         proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+
+      location /last-seen {
+        content_by_lua_block {
+          local activity = ngx.shared.activity
+          local last_seen, flags = activity:get("last_seen")
+          ngx.print(last_seen)
+          ngx.exit(ngx.HTTP_OK)
+        }
       }
       # Kernel API.
       location ~ /api/kernels/ {
