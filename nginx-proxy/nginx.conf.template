@@ -31,7 +31,7 @@ http {
   lua_shared_dict jwks 1m;
 
   # cache for activity data for pod idler
-  lua_shared_dict activity 256k;
+  lua_shared_dict activity 256k; 
 
   map $http_upgrade $connection_upgrade {
     default upgrade;
