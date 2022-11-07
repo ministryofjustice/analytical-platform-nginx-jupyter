@@ -59,15 +59,15 @@ http {
     
         # if we're just starting, we need to set a last-seen value of the present time
         content_by_lua_block {
-	        local activity = ngx.shared.activity
-	        local seen, flags = activity:get("last_seen")
+          local activity = ngx.shared.activity
+          local seen, flags = activity:get("last_seen")
 
-	        if (type(seen) == type(nil)) then
-	          local timestamp = os.time(os.date("!*t"))
-	          activity:set("last_seen",timestamp)
-	        end
-            ngx.print("OK")
-			ngx.exit(ngx.HTTP_OK)
+          if (type(seen) == type(nil)) then
+            local timestamp = os.time(os.date("!*t"))
+            activity:set("last_seen",timestamp)
+	      end
+          ngx.print("OK")
+          ngx.exit(ngx.HTTP_OK)
 	    }
     }
 
