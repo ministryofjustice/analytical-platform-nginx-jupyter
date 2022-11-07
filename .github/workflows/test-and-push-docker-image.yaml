@@ -12,6 +12,7 @@ jobs:
     env:
       APP_HOST: jupyter-lab
       APP_PORT: 8888
+      PROXY_PORT: 3000
       AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
       AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
       AUTH0_TENANT_DOMAIN: ${{ secrets.TENANT_DOMAIN }}
@@ -64,6 +65,11 @@ jobs:
           echo ::set-output name=tag::${TAG}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
 
+      - name: Clean (docker-compose)
+        run: make clean
+        env:
+          IMAGE_TAG: ${{ steps.prep.outputs.tag }}
+
       - name: Build image
         run: make build
         env:
@@ -72,7 +78,7 @@ jobs:
           IMAGE_TAG: ${{ steps.prep.outputs.tag }}
 
       - name: Spin up (docker-compose)
-        run: make clean up
+        run: make up
         env:
           IMAGE_TAG: ${{ steps.prep.outputs.tag }}
 

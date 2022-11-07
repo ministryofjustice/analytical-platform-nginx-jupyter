@@ -30,6 +30,9 @@ http {
   # cache for JWKs
   lua_shared_dict jwks 1m;
 
+  # cache for activity data for pod idler
+  lua_shared_dict activity 256k; 
+
   map $http_upgrade $connection_upgrade {
     default upgrade;
     ''      close;
@@ -53,13 +56,37 @@ http {
 
     # This is for kubernetes to check the container is functional
     location /nginx-health {
-        return 200 'OK';
-        add_header Content-Type text/plain;
+    
+        # if we're just starting, we need to set a last-seen value of the present time
+        content_by_lua_block {
+          local activity = ngx.shared.activity
+          local seen, flags = activity:get("last_seen")
+
+          if (type(seen) == type(nil)) then
+            local timestamp = os.time(os.date("!*t"))
+            activity:set("last_seen",timestamp)
+	      end
+          ngx.print("OK")
+          ngx.exit(ngx.HTTP_OK)
+	    }
     }
+
+      # session activity API - returns unix timestamp
+      location /last-seen {
+        content_by_lua_block {
+          local activity = ngx.shared.activity
+          local last_seen, flags = activity:get("last_seen")
+          ngx.print(last_seen)
+          ngx.exit(ngx.HTTP_OK)
+        }
+      }
 
     location / {
       # This logic calls out to AUTH0 for OIDC authentication
       access_by_lua '
+          -- access activity shared memory
+          local activity = ngx.shared.activity
+
           -- Configuration for the OIDC call
           local opts = {
             redirect_uri = "https://${USERNAME}-jupyter-lab.${REDIRECT_DOMAIN}/callback",
@@ -96,6 +123,10 @@ http {
               ngx.say("User not allowed for this application.")
               ngx.exit(ngx.HTTP_FORBIDDEN)
             end
+            
+            -- record the access time so we can decide when to idle
+            local timestamp = os.time(os.date("!*t"))
+            activity:set("last_seen",timestamp)
 
           end
       ';
@@ -110,6 +141,7 @@ http {
         # prevents proxy from anonymyzing user
         proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
       }
+
       # Kernel API.
       location ~ /api/kernels/ {
         proxy_pass            http://${APP_HOST}:${APP_PORT};

@@ -18,7 +18,7 @@ push:
 	docker push ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
 
 build:
-	docker build --network=${NETWORK} -t ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG} nginx-proxy
+	(docker rmi ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG} || true) && docker build --network=${NETWORK} -t ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG} nginx-proxy
 
 up:
 	docker-compose up -d jupyter-lab nginx-proxy
