@@ -56,9 +56,30 @@ http {
 
     # This is for kubernetes to check the container is functional
     location /nginx-health {
-        return 200 'OK';
-        add_header Content-Type text/plain;
+    
+        # if we're just starting, we need to set a last-seen value of the present time
+        content_by_lua_block {
+	        local activity = ngx.shared.activity
+	        local seen, flags = activity:get("last_seen")
+
+	        if (type(seen) == type(nil)) then
+	          local timestamp = os.time(os.date("!*t"))
+	          activity:set("last_seen",timestamp)
+	        end
+
+			ngx.exit(ngx.HTTP_OK)
+	    }
     }
+
+      # session activity API - returns unix timestamp
+      location /last-seen {
+        content_by_lua_block {
+          local activity = ngx.shared.activity
+          local last_seen, flags = activity:get("last_seen")
+          ngx.print(last_seen)
+          ngx.exit(ngx.HTTP_OK)
+        }
+      }
 
     location / {
       # This logic calls out to AUTH0 for OIDC authentication
@@ -102,7 +123,7 @@ http {
               ngx.say("User not allowed for this application.")
               ngx.exit(ngx.HTTP_FORBIDDEN)
             end
-
+            
             -- record the access time so we can decide when to idle
             local timestamp = os.time(os.date("!*t"))
             activity:set("last_seen",timestamp)
@@ -121,15 +142,6 @@ http {
         proxy_set_header      X-Forwarded-For $proxy_add_x_forwarded_for;
       }
 
-      # session activity API - returns unix timestamp
-      location /last-seen {
-        content_by_lua_block {
-          local activity = ngx.shared.activity
-          local last_seen, flags = activity:get("last_seen")
-          ngx.print(last_seen)
-          ngx.exit(ngx.HTTP_OK)
-        }
-      }
       # Kernel API.
       location ~ /api/kernels/ {
         proxy_pass            http://${APP_HOST}:${APP_PORT};
