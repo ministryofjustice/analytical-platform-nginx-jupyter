@@ -73,7 +73,7 @@ http {
     }
     
     # Use the custom error page
-    error_page 404 /custom_404.html
+    error_page 404 /custom_404.html;
     location = /custom_404.html {
             root /var/www/html;
             internal;}
