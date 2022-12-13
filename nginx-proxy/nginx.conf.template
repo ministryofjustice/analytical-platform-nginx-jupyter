@@ -69,14 +69,14 @@ http {
           ngx.print("OK")
           ngx.exit(ngx.HTTP_OK)
 
-    # Use the custom error page
-    error_page 404 /custom_404.html
-    location = /custom_404.html {
-            root /usr/share/nginx/html;
-            internal;}
-
 	    }
     }
+    
+    # Use the custom error page
+    error_page 404 /custom_404.html;
+    location = /custom_404.html {
+            root /var/www/html;
+            internal;}
 
       # session activity API - returns unix timestamp
       location /last-seen {
