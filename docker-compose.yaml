@@ -4,7 +4,7 @@
 services:
   jupyter-lab:
     image: jupyter/pyspark-notebook
-    ports: [8888:8888,8050:8050]
+    ports: [8888:8888, 8050:8050]
     volumes: [./home:/home/test_user]
 
   nginx-proxy:
