@@ -7,4 +7,6 @@ COPY scripts/start_proxy.sh /usr/bin/start_proxy.sh
 RUN chmod +x /usr/bin/start_proxy.sh
 COPY custom_404.html /var/www/html
 
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD ["/usr/local/bin/healthcheck.sh"]
+
 CMD /usr/bin/start_proxy.sh
