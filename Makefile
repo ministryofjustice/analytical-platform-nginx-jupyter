@@ -20,8 +20,8 @@ push:
 
 build:
 	docker build --network=${NETWORK} -t ${REGISTRY}:${IMAGE_TAG} nginx-proxy
-up:
-	docker-compose up -d jupyter-lab nginx-proxy
+
+up: docker-compose up -d jupyter-lab nginx-proxy
 
 logs:
 	docker-compose logs -f nginx-proxy
@@ -29,5 +29,4 @@ logs:
 integration:
 	./tests/check_is_redirecting.sh
 
-test: 
-	build up integration clean
+test: build up integration clean
