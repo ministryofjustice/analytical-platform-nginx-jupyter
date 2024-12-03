@@ -21,7 +21,7 @@ build:
 	docker build --network=${NETWORK} -t ${REGISTRY}:${IMAGE_TAG} nginx-proxy
 
 up: 
-	docker-compose up -d jupyter-lab nginx-proxy
+	docker compose up -d jupyter-lab nginx-proxy
 
 logs:
 	docker-compose logs -f nginx-proxy
