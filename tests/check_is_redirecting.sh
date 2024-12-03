@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker-compose logs
+docker compose logs
 
 cmd=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:"$PROXY_PORT"/)
 if [[ $cmd -ne 302 ]]; then
