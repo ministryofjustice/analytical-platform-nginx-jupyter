@@ -1,8 +1,7 @@
-export REGISTRY:= ghcr.io/ministryofjustice/nginx-proxy-jupyter
+export REGISTRY:= ghcr.io/xxxx/nginx-proxy-jupyter
 export NETWORK?=default
 export REPOSITORY:=nginx-proxy-jupyter
 export VERSION?=0.0.1
-#export IMAGE_TAG?=UNSET
 export IMAGE_TAG?= local
 export PROXY_PORT?=8001
 export USERNAME?=test-user
@@ -21,7 +20,8 @@ push:
 build:
 	docker build --network=${NETWORK} -t ${REGISTRY}:${IMAGE_TAG} nginx-proxy
 
-up: docker-compose up -d jupyter-lab nginx-proxy
+up: 
+	docker-compose up -d jupyter-lab nginx-proxy
 
 logs:
 	docker-compose logs -f nginx-proxy
