@@ -1,8 +1,10 @@
+# Title
+
 Title the PR to complete the sentence: "Merging this PR will ..."
 
 ## What
 
-Describe what you have changed and *why*
+Describe what you have changed and _why_
 
 ## How to review
 
